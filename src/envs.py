@@ -13,9 +13,9 @@ DEVICE = "cpu" # "cuda:0" if you add compute, for harness evaluations
 LIMIT = 20 # !!!! Should be None for actual evaluations!!!
 
 # For lighteval evaluations
-ACCELERATOR = ""
-REGION = ""
-VENDOR = ""
+ACCELERATOR = "gpu"
+REGION = "us-east-1"
+VENDOR = "aws"
 # ----------------------------------
 
 REPO_ID = f"{OWNER}/leaderboard-backend"
