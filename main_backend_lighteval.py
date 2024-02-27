@@ -5,13 +5,12 @@ from huggingface_hub import snapshot_download
 
 logging.getLogger("openai").setLevel(logging.WARNING)
 
-from src.backend.run_eval_suite import run_evaluation
+from backend.run_eval_suite_lighteval import run_evaluation
 from src.backend.manage_requests import check_completed_evals, get_eval_requests, set_eval_request
 from src.backend.sort_queue import sort_models_by_priority
 
-from src.envs import QUEUE_REPO, EVAL_REQUESTS_PATH_BACKEND, RESULTS_REPO, EVAL_RESULTS_PATH_BACKEND, DEVICE, API, LIMIT, TOKEN
-from src.about import Tasks, NUM_FEWSHOT
-TASKS_HARNESS = [task.value.benchmark for task in Tasks]
+from src.envs import QUEUE_REPO, EVAL_REQUESTS_PATH_BACKEND, RESULTS_REPO, EVAL_RESULTS_PATH_BACKEND, API, LIMIT, TOKEN, ACCELERATOR, VENDOR, REGION
+from src.about import TASKS_LIGHTEVAL
 
 logging.basicConfig(level=logging.ERROR)
 pp = pprint.PrettyPrinter(width=80)
@@ -61,15 +60,19 @@ def run_auto_eval():
         local_dir=EVAL_REQUESTS_PATH_BACKEND,
     )
 
+    # This needs to be done
+    instance_size, instance_type = get_instance_for_model(eval_request)
+
     run_evaluation(
         eval_request=eval_request, 
-        task_names=TASKS_HARNESS, 
-        num_fewshot=NUM_FEWSHOT, 
+        task_names=TASKS_LIGHTEVAL, 
         local_dir=EVAL_RESULTS_PATH_BACKEND,
-        results_repo=RESULTS_REPO,
         batch_size=1, 
-        device=DEVICE, 
-        no_cache=True, 
+        accelerator=ACCELERATOR, 
+        region=REGION, 
+        vendor=VENDOR, 
+        instance_size=instance_size, 
+        instance_type=instance_type,  
         limit=LIMIT
         )
 

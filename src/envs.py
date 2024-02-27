@@ -7,11 +7,18 @@ from huggingface_hub import HfApi
 TOKEN = os.environ.get("TOKEN") # A read/write token for your org
 
 OWNER = "demo-leaderboard-backend" # Change to your org - don't forget to create a results and request file
-DEVICE = "cpu" # "cuda:0" if you add compute
+
+# For harness evaluations
+DEVICE = "cpu" # "cuda:0" if you add compute, for harness evaluations
 LIMIT = 20 # !!!! Should be None for actual evaluations!!!
+
+# For lighteval evaluations
+ACCELERATOR = ""
+REGION = ""
+VENDOR = ""
 # ----------------------------------
 
-REPO_ID = f"{OWNER}/leaderboard"
+REPO_ID = f"{OWNER}/leaderboard-backend"
 QUEUE_REPO = f"{OWNER}/requests"
 RESULTS_REPO = f"{OWNER}/results"
 
@@ -25,3 +32,4 @@ EVAL_REQUESTS_PATH_BACKEND = os.path.join(CACHE_PATH, "eval-queue-bk")
 EVAL_RESULTS_PATH_BACKEND = os.path.join(CACHE_PATH, "eval-results-bk")
 
 API = HfApi(token=TOKEN)
+

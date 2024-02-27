@@ -10,8 +10,6 @@ pinned: true
 license: apache-2.0
 ---
 
-Check out the configuration reference at https://huggingface.co/docs/hub/spaces-config-reference
-
 Most of the variables to change for a default leaderboard are in src/env (replace the path for your leaderboard) and src/about.
 
 Results files should have the following format:
@@ -37,4 +35,4 @@ Request files are created automatically by this tool.
 
 If you encounter problem on the space, don't hesitate to restart it to remove the create eval-queue, eval-queue-bk, eval-results and eval-results-bk created folder.
 
-If you want to run your own backend, you only need to change the logic in src/backend/run_eval_suite, which at the moment launches the Eleuther AI Harness.
+If you want to run your own backend, you only need to change the logic in src/backend/run_eval_suite_..., which at the moment launches the Eleuther AI Harness or Lighteval, and edit the app.py to point to the correct file.
