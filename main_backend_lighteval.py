@@ -62,7 +62,10 @@ def run_auto_eval():
 
     # This needs to be done
     #instance_size, instance_type = get_instance_for_model(eval_request)
-    instance_size, instance_type = "small", "g4dn.xlarge" 
+    # For GPU
+    # instance_size, instance_type = "small", "g4dn.xlarge" 
+    # For CPU
+    instance_size, instance_type = "medium", "c6i"
 
     run_evaluation(
         eval_request=eval_request, 
