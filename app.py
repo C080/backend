@@ -11,7 +11,7 @@ from src.logging import LOGGER, read_logs
 sys.stdout = LOGGER
 sys.stderr = LOGGER
 
-subprocess.run(["python", "scripts/fix_harness_import.py"])
+#subprocess.run(["python", "scripts/fix_harness_import.py"])
 
 def launch_backend():
     _ = subprocess.run(["python", "main_backend_lighteval.py"])
