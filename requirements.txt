@@ -17,3 +17,8 @@ git+https://github.com/EleutherAI/lm-evaluation-harness.git@b281b0921b636bc36ad0
 git+https://github.com/huggingface/lighteval.git#egg=lighteval
 accelerate==0.24.1
 sentencepiece
+
+# Log Visualizer
+beautifulsoup4==4.12.2
+lxml==4.9.3
+rich==13.3.4

@@ -1,27 +1,26 @@
-import sys
 import logging
-import subprocess
+import sys
+
 import gradio as gr
-from apscheduler.schedulers.background import BackgroundScheduler
+from main_backend_lighteval import run_auto_eval
+from src.display.log_visualizer import log_file_to_html_string
+from src.display.css_html_js import dark_mode_gradio_js
+from src.envs import REFRESH_RATE
 
-logging.basicConfig(level=logging.ERROR)
+logging.basicConfig(level=logging.INFO)
 
-from src.logging import LOGGER, read_logs
 
-sys.stdout = LOGGER
-sys.stderr = LOGGER
+intro_md = f"""
+# Intro
+This is just a visual for the auto evaluator. Note that the lines of the log visual are reversed.
+# Logs
+"""
 
-#subprocess.run(["python", "scripts/fix_harness_import.py"])
+with gr.Blocks(js=dark_mode_gradio_js) as demo:
+    with gr.Tab("Application"):
+        gr.Markdown(intro_md)
+        dummy = gr.Markdown(run_auto_eval, every=REFRESH_RATE, visible=False)
+        output = gr.HTML(log_file_to_html_string, every=10)
 
-def launch_backend():
-    _ = subprocess.run(["python", "main_backend_lighteval.py"])
-
-demo = gr.Blocks()
-with demo:
-    logs = gr.Code(interactive=False)
-    demo.load(read_logs, None, logs, every=1)
-    
-scheduler = BackgroundScheduler()
-scheduler.add_job(launch_backend, "interval", seconds=60) # will only allow one job to be run at the same time
-scheduler.start()
-demo.queue(default_concurrency_limit=40).launch()
+if __name__ == '__main__':
+    demo.queue(default_concurrency_limit=40).launch(server_name="0.0.0.0", show_error=True, server_port=7860)

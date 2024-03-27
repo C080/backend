@@ -7,18 +7,20 @@ from lm_eval import tasks, evaluator, utils
 
 from src.envs import RESULTS_REPO, API
 from src.backend.manage_requests import EvalRequest
+from src.logging import setup_logger
 
 logging.getLogger("openai").setLevel(logging.WARNING)
+logger = setup_logger(__name__)
 
 def run_evaluation(eval_request: EvalRequest, task_names, num_fewshot, batch_size, device, local_dir: str, results_repo: str, no_cache=True, limit=None):
     if limit:
-        print(
+        logger.info(
             "WARNING: --limit SHOULD ONLY BE USED FOR TESTING. REAL METRICS SHOULD NOT BE COMPUTED USING LIMIT."
         )
 
     task_names = utils.pattern_match(task_names, tasks.ALL_TASKS)
 
-    print(f"Selected Tasks: {task_names}")
+    logger.info(f"Selected Tasks: {task_names}")
 
     results = evaluator.simple_evaluate(
         model="hf-causal-experimental", # "hf-causal"
@@ -38,14 +40,14 @@ def run_evaluation(eval_request: EvalRequest, task_names, num_fewshot, batch_siz
     results["config"]["model_sha"] = eval_request.revision
 
     dumped = json.dumps(results, indent=2)
-    print(dumped)
+    logger.info(dumped)
 
     output_path = os.path.join(local_dir, *eval_request.model.split("/"), f"results_{datetime.now()}.json")
     os.makedirs(os.path.dirname(output_path), exist_ok=True)
     with open(output_path, "w") as f:
         f.write(dumped)
 
-    print(evaluator.make_table(results))
+    logger.info(evaluator.make_table(results))
 
     API.upload_file(
         path_or_fileobj=output_path,

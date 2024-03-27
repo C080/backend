@@ -5,6 +5,9 @@ from typing import Optional
 
 from huggingface_hub import HfApi, snapshot_download
 from src.envs import TOKEN
+from src.logging import setup_logger
+
+logger = setup_logger(__name__)
 
 @dataclass
 class EvalRequest:
@@ -103,20 +106,20 @@ def check_completed_evals(
 
     for eval_request in running_evals:
         model = eval_request.model
-        print("====================================")
-        print(f"Checking {model}")
+        logger.info("====================================")
+        logger.info(f"Checking {model}")
 
         output_path = model
         output_file = f"{local_dir_results}/{output_path}/results*.json"
         output_file_exists = len(glob.glob(output_file)) > 0
 
         if output_file_exists:
-            print(
+            logger.info(
                 f"EXISTS output file exists for {model} setting it to {completed_status}"
             )
             set_eval_request(api, eval_request, completed_status, hf_repo, local_dir)
         else:
-            print(
+            logger.info(
                 f"No result file found for {model} setting it to {failed_status}"
             )
             set_eval_request(api, eval_request, failed_status, hf_repo, local_dir)

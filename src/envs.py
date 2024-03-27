@@ -31,5 +31,8 @@ EVAL_RESULTS_PATH = os.path.join(CACHE_PATH, "eval-results")
 EVAL_REQUESTS_PATH_BACKEND = os.path.join(CACHE_PATH, "eval-queue-bk")
 EVAL_RESULTS_PATH_BACKEND = os.path.join(CACHE_PATH, "eval-results-bk")
 
+REFRESH_RATE = 10 * 60  # 10 min
+NUM_LINES_VISUALIZE = 300
+
 API = HfApi(token=TOKEN)
 

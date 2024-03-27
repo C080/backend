@@ -11,9 +11,11 @@ from src.backend.sort_queue import sort_models_by_priority
 
 from src.envs import QUEUE_REPO, EVAL_REQUESTS_PATH_BACKEND, RESULTS_REPO, EVAL_RESULTS_PATH_BACKEND, DEVICE, API, LIMIT, TOKEN
 from src.about import Tasks, NUM_FEWSHOT
+from src.logging import setup_logger
 TASKS_HARNESS = [task.value.benchmark for task in Tasks]
 
-logging.basicConfig(level=logging.ERROR)
+# logging.basicConfig(level=logging.ERROR)
+logger = setup_logger(__name__)
 pp = pprint.PrettyPrinter(width=80)
 
 PENDING_STATUS = "PENDING"
@@ -51,7 +53,7 @@ def run_auto_eval():
         return
 
     eval_request = eval_requests[0]
-    pp.pprint(eval_request)
+    logger.info(pp.pformat(eval_request))
 
     set_eval_request(
         api=API,

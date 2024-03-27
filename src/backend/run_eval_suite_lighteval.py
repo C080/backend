@@ -7,12 +7,14 @@ from lighteval.main_accelerate import main, EnvConfig, create_model_config, load
 
 from src.envs import RESULTS_REPO, CACHE_PATH, TOKEN
 from src.backend.manage_requests import EvalRequest
+from src.logging import setup_logger
 
 logging.getLogger("openai").setLevel(logging.WARNING)
+logger = setup_logger(__name__)
 
 def run_evaluation(eval_request: EvalRequest, task_names: str, batch_size: int, local_dir: str, accelerator: str, region: str, vendor: str, instance_size: str, instance_type: str, limit=None):
     if limit:
-        print("WARNING: --limit SHOULD ONLY BE USED FOR TESTING. REAL METRICS SHOULD NOT BE COMPUTED USING LIMIT.")
+        logger.info("WARNING: --limit SHOULD ONLY BE USED FOR TESTING. REAL METRICS SHOULD NOT BE COMPUTED USING LIMIT.")
 
     args = {
             "endpoint_model_name":f"{eval_request.model}_{eval_request.precision}".lower(),
@@ -43,7 +45,7 @@ def run_evaluation(eval_request: EvalRequest, task_names: str, batch_size: int, 
         results["config"]["model_sha"] = eval_request.revision
 
         dumped = json.dumps(results, indent=2)
-        print(dumped)
+        logger.info(dumped)
     except Exception: # if eval failed, we force a cleanup
         env_config = EnvConfig(token=TOKEN, cache_dir=args['cache_dir'])
 

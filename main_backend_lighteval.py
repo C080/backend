@@ -11,8 +11,11 @@ from src.backend.sort_queue import sort_models_by_priority
 
 from src.envs import QUEUE_REPO, EVAL_REQUESTS_PATH_BACKEND, RESULTS_REPO, EVAL_RESULTS_PATH_BACKEND, API, LIMIT, TOKEN, ACCELERATOR, VENDOR, REGION
 from src.about import TASKS_LIGHTEVAL
+from src.logging import setup_logger
 
-logging.basicConfig(level=logging.ERROR)
+logger = setup_logger(__name__)
+
+# logging.basicConfig(level=logging.ERROR)
 pp = pprint.PrettyPrinter(width=80)
 
 PENDING_STATUS = "PENDING"
@@ -44,13 +47,14 @@ def run_auto_eval():
     # Sort the evals by priority (first submitted first run)
     eval_requests = sort_models_by_priority(api=API, models=eval_requests)
 
-    print(f"Found {len(eval_requests)} {','.join(current_pending_status)} eval requests")
+    logger.info(f"Found {len(eval_requests)} {','.join(current_pending_status)} eval requests")
 
     if len(eval_requests) == 0:
         return
 
     eval_request = eval_requests[0]
-    pp.pprint(eval_request)
+    logger.info(pp.pformat(eval_request))
+
 
     set_eval_request(
         api=API,
