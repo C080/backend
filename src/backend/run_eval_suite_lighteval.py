@@ -45,7 +45,7 @@ def run_evaluation(eval_request: EvalRequest, task_names: str, batch_size: int, 
         dumped = json.dumps(results, indent=2)
         print(dumped)
     except Exception: # if eval failed, we force a cleanup
-        env_config = EnvConfig(token=TOKEN, cache_dir=args.cache_dir)
+        env_config = EnvConfig(token=TOKEN, cache_dir=args['cache_dir'])
 
         model_config = create_model_config(args=args, accelerator=accelerator)
         model, _ = load_model(config=model_config, env_config=env_config)
