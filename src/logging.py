@@ -23,32 +23,16 @@ def setup_logger(name: str):
 
     return logger
 
-# class Logger:
-#     def __init__(self):
-#         self.terminal = sys.stdout
-#         self.log = open(log_file, "a+")
-#
-#     def write(self, message):
-#         self.terminal.write(message)
-#         self.log.write(message)
-#
-#     def flush(self):
-#         self.terminal.flush()
-#         self.log.flush()
-#
-#     def isatty(self):
-#         return False
-#
-# def read_logs():
-#     sys.stdout.flush()
-#     #API.upload_file(
-#     #    path_or_fileobj="output.log",
-#     #    path_in_repo="demo-backend.log",
-#     #    repo_id="demo-leaderboard-backend/logs",
-#     #    repo_type="dataset",
-#     #)
-#
-#     with open(log_file, "r") as f:
-#         return f.read()
-#
-# LOGGER =  Logger()
+
+def configure_root_logger():
+    # Configure the root logger
+    logging.basicConfig(level=logging.INFO)
+    root_logger = logging.getLogger()
+
+    formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
+
+    file_handler = logging.FileHandler(log_file)
+    file_handler.setLevel(logging.INFO)
+    file_handler.setFormatter(formatter)
+
+    root_logger.addHandler(file_handler)

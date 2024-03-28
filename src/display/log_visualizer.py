@@ -9,19 +9,17 @@ from src.display.css_html_js import style_content
 from src.envs import NUM_LINES_VISUALIZE
 from src.logging import log_file
 
-proj_dir = Path(__name__).parent
 
-
-def log_file_to_html_string():
+def log_file_to_html_string(reverse=True):
     with open(log_file, "rt") as f:
-        # Seek to the end of the file minus 300 lines
-        # Read the last 300 lines of the file
-        lines = f.readlines()
-        lines = lines[-NUM_LINES_VISUALIZE:]
+            lines = f.readlines()
+            lines = lines[-NUM_LINES_VISUALIZE:]
 
-        # Syntax-highlight the last 300 lines of the file using the Python lexer and Monokai style
-        output = "".join(reversed(lines))
-        syntax = Syntax(output, "python", theme="monokai", word_wrap=True)
+    if reverse:
+        lines = reversed(lines)
+
+    output = "".join(lines)
+    syntax = Syntax(output, "python", theme="monokai", word_wrap=True)
 
     console = Console(record=True, width=150, style="#272822", file=StringIO())
     console.print(syntax)
@@ -30,7 +28,7 @@ def log_file_to_html_string():
     # Parse the HTML content using BeautifulSoup
     soup = BeautifulSoup(html_content, 'lxml')
 
-    # Modify the <pre> tag
+    # Modify the <pre> tag and add custom styles
     pre_tag = soup.pre
     pre_tag['class'] = 'scrollable'
     del pre_tag['style']

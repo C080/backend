@@ -70,6 +70,7 @@ def run_auto_eval():
     # instance_size, instance_type = "small", "g4dn.xlarge" 
     # For CPU
     instance_size, instance_type = "medium", "c6i"
+    logger.info(f'Starting Evaluation of {eval_request.json_filepath} on Inference endpoints: {instance_size} {instance_type}')
 
     run_evaluation(
         eval_request=eval_request, 
@@ -83,6 +84,8 @@ def run_auto_eval():
         instance_type=instance_type,  
         limit=LIMIT
         )
+
+    logger.info(f'Completed Evaluation of {eval_request.json_filepath} on Inference endpoints: {instance_size} {instance_type}')
 
 
 if __name__ == "__main__":
