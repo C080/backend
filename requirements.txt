@@ -18,7 +18,11 @@ git+https://github.com/huggingface/lighteval.git#egg=lighteval
 accelerate==0.24.1
 sentencepiece
 
+# Evaluation suites
+lighteval
+lm_eval
+
 # Log Visualizer
-beautifulsoup4==4.12.2
+BeautifulSoup4==4.12.2
 lxml==4.9.3
 rich==13.3.4

@@ -19,8 +19,8 @@ This is just a visual for the auto evaluator. Note that the lines of the log vis
 with gr.Blocks(js=dark_mode_gradio_js) as demo:
     with gr.Tab("Application"):
         gr.Markdown(intro_md)
-        dummy = gr.Markdown(run_auto_eval, every=REFRESH_RATE, visible=False)
         output = gr.HTML(log_file_to_html_string, every=10)
+        dummy = gr.Markdown(run_auto_eval, every=REFRESH_RATE, visible=False)
 
 if __name__ == '__main__':
     demo.queue(default_concurrency_limit=40).launch(server_name="0.0.0.0", show_error=True, server_port=7860)
