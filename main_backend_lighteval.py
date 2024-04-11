@@ -9,8 +9,7 @@ from src.backend.run_eval_suite_lighteval import run_evaluation
 from src.backend.manage_requests import check_completed_evals, get_eval_requests, set_eval_request
 from src.backend.sort_queue import sort_models_by_priority
 
-from src.envs import QUEUE_REPO, EVAL_REQUESTS_PATH_BACKEND, RESULTS_REPO, EVAL_RESULTS_PATH_BACKEND, API, LIMIT, TOKEN, ACCELERATOR, VENDOR, REGION
-from src.about import TASKS_LIGHTEVAL
+from src.envs import QUEUE_REPO, EVAL_REQUESTS_PATH_BACKEND, RESULTS_REPO, EVAL_RESULTS_PATH_BACKEND, API, LIMIT, TOKEN, ACCELERATOR, VENDOR, REGION, TASKS_LIGHTEVAL
 from src.logging import setup_logger
 
 logger = setup_logger(__name__)

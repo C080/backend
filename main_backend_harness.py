@@ -10,9 +10,10 @@ from src.backend.manage_requests import check_completed_evals, get_eval_requests
 from src.backend.sort_queue import sort_models_by_priority
 
 from src.envs import QUEUE_REPO, EVAL_REQUESTS_PATH_BACKEND, RESULTS_REPO, EVAL_RESULTS_PATH_BACKEND, DEVICE, API, LIMIT, TOKEN
-from src.about import Tasks, NUM_FEWSHOT
+from src.envs import TASKS_HARNESS, NUM_FEWSHOT
 from src.logging import setup_logger
-TASKS_HARNESS = [task.value.benchmark for task in Tasks]
+
+
 
 # logging.basicConfig(level=logging.ERROR)
 logger = setup_logger(__name__)
