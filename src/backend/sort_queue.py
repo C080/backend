@@ -11,7 +11,7 @@ class ModelMetadata:
     likes: int = 0
     size: int = 15
 
-
+# All the functions below sort the models in the queue based on different parameters
 def sort_models_by_priority(api: HfApi, models: list[EvalRequest]) -> list[EvalRequest]:
     private_models = [model for model in models if model.private]
     public_models = [model for model in models if not model.private]

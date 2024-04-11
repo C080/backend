@@ -12,7 +12,23 @@ from src.logging import setup_logger
 logging.getLogger("openai").setLevel(logging.WARNING)
 logger = setup_logger(__name__)
 
-def run_evaluation(eval_request: EvalRequest, task_names, num_fewshot, batch_size, device, local_dir: str, results_repo: str, no_cache=True, limit=None):
+def run_evaluation(eval_request: EvalRequest, task_names: list, num_fewshot: int, batch_size: int, device: str, local_dir: str, results_repo: str, no_cache: bool =True, limit: int =None):
+    """Runs one evaluation for the current evaluation request file, then pushes the results to the hub.
+
+    Args:
+        eval_request (EvalRequest): Input evaluation request file representation
+        task_names (list): Tasks to launch
+        num_fewshot (int): Number of few shots to use
+        batch_size (int): Selected batch size
+        device (str): "cpu" or "gpu:0", depending on what you assigned to the space
+        local_dir (str): Where to save the results locally
+        results_repo (str): To which repository to upload the results
+        no_cache (bool, optional): Whether to use a cache or not.
+        limit (int, optional): Whether to use a number of samples only for the evaluation - only for debugging
+
+    Returns:
+        _type_: _description_
+    """
     if limit:
         logger.info(
             "WARNING: --limit SHOULD ONLY BE USED FOR TESTING. REAL METRICS SHOULD NOT BE COMPUTED USING LIMIT."

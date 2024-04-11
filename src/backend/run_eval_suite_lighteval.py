@@ -13,6 +13,22 @@ logging.getLogger("openai").setLevel(logging.WARNING)
 logger = setup_logger(__name__)
 
 def run_evaluation(eval_request: EvalRequest, task_names: str, batch_size: int, local_dir: str, accelerator: str, region: str, vendor: str, instance_size: str, instance_type: str, limit=None):
+    """Runs one evaluation for the current evaluation request file using lighteval, then pushes the results to the hub.
+
+    Args:
+        eval_request (EvalRequest): Input evaluation request file representation
+        task_names (list): Tasks to launch
+        batch_size (int): Selected batch size
+        accelerator (str): Inference endpoint parameter for running the evaluation
+        region (str):  Inference endpoint parameter for running the evaluation
+        vendor (str):  Inference endpoint parameter for running the evaluation
+        instance_size (str):  Inference endpoint parameter for running the evaluation
+        instance_type (str):  Inference endpoint parameter for running the evaluation
+        local_dir (str): Where to save the results locally
+        no_cache (bool, optional): Whether to use a cache or not.
+        limit (int, optional): Whether to use a number of samples only for the evaluation - only for debugging
+    """    
+
     if limit:
         logger.info("WARNING: --limit SHOULD ONLY BE USED FOR TESTING. REAL METRICS SHOULD NOT BE COMPUTED USING LIMIT.")
 

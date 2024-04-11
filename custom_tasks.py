@@ -1,6 +1,6 @@
 # ruff: noqa: F405, F403, F401
 """
-Custom evaluation tasks for lighteval. Copy this file and complete it with the info for your task.
+Custom evaluation tasks for lighteval. Complete this task with your own configuration if you want to use a custom lighteval task.
 
 This file generally create just a TASKS_TABLE and TASKS_GROUPS which are then imported by LightEval.
 

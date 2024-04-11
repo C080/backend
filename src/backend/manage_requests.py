@@ -11,27 +11,32 @@ logger = setup_logger(__name__)
 
 @dataclass
 class EvalRequest:
+    """This class represents one evaluation request file.
+    """
     model: str
-    private: bool
     status: str
     json_filepath: str
     weight_type: str = "Original"
     model_type: str = ""  # pretrained, finetuned, with RL
     precision: str = ""  # float16, bfloat16
-    base_model: Optional[str] = None # for adapter models
-    revision: str = "main" # commit
+    revision: str = "main" # commit hash
     submitted_time: Optional[str] = "2022-05-18T11:40:22.519222"  # random date just so that we can still order requests by date
-    model_type: Optional[str] = None
+    model_type: Optional[str] = None # pretrained, fine-tuned, etc - define your own categories in 
     likes: Optional[int] = 0
     params: Optional[int] = None
     license: Optional[str] = ""
     
     def get_model_args(self):
+        """Edit this function if you want to manage more complex quantization issues. You'll need to map it to 
+        the evaluation suite you chose.
+        """
         model_args = f"pretrained={self.model},revision={self.revision}"
 
         if self.precision in ["float16", "bfloat16", "float32"]:
             model_args += f",dtype={self.precision}"
+
         # Quantized models need some added config, the install of bits and bytes, etc
+
         #elif self.precision == "8bit":
         #    model_args += ",load_in_8bit=True"
         #elif self.precision == "4bit":
@@ -39,7 +44,6 @@ class EvalRequest:
         #elif self.precision == "GPTQ":
             # A GPTQ model does not need dtype to be specified,
             # it will be inferred from the config
-            pass
         else:
             raise Exception(f"Unknown precision {self.precision}.")
         
@@ -67,7 +71,7 @@ def set_eval_request(api: HfApi, eval_request: EvalRequest, set_to_status: str, 
 
 
 def get_eval_requests(job_status: list, local_dir: str, hf_repo: str) -> list[EvalRequest]:
-    """Get all pending evaluation requests and return a list in which private
+    """Gets all pending evaluation requests and return a list in which private
     models appearing first, followed by public models sorted by the number of
     likes.
 
