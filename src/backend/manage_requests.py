@@ -14,7 +14,9 @@ class EvalRequest:
     """This class represents one evaluation request file.
     """
     model: str
+    base_model: str
     status: str
+    private: bool
     json_filepath: str
     weight_type: str = "Original"
     model_type: str = ""  # pretrained, finetuned, with RL

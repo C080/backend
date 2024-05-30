@@ -8,8 +8,8 @@ configure_root_logger()
 from functools import partial
 
 import gradio as gr
-from main_backend_lighteval import run_auto_eval
-# from main_backend_harness import run_auto_eval
+# from main_backend_lighteval import run_auto_eval
+from main_backend_harness import run_auto_eval
 from src.display.log_visualizer import log_file_to_html_string
 from src.display.css_html_js import dark_mode_gradio_js
 from src.envs import REFRESH_RATE, REPO_ID, QUEUE_REPO, RESULTS_REPO

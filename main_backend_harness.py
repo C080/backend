@@ -5,7 +5,7 @@ from huggingface_hub import snapshot_download
 
 logging.getLogger("openai").setLevel(logging.WARNING)
 
-from backend.run_eval_suite_harness import run_evaluation
+from src.backend.run_eval_suite_harness import run_evaluation
 from src.backend.manage_requests import check_completed_evals, get_eval_requests, set_eval_request
 from src.backend.sort_queue import sort_models_by_priority
 

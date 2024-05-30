@@ -34,42 +34,75 @@ def run_evaluation(eval_request: EvalRequest, task_names: list, num_fewshot: int
             "WARNING: --limit SHOULD ONLY BE USED FOR TESTING. REAL METRICS SHOULD NOT BE COMPUTED USING LIMIT."
         )
 
-    task_names = utils.pattern_match(task_names, tasks.ALL_TASKS)
+    #task_names = utils.pattern_match(task_names, tasks.ALL_TASKS)
 
     logger.info(f"Selected Tasks: {task_names}")
 
-    results = evaluator.simple_evaluate(
-        model="hf-causal-experimental", # "hf-causal"
-        model_args=eval_request.get_model_args(),
-        tasks=task_names,
+    results_1 = evaluator.simple_evaluate(
+        model= 'huggingface', #"hf-causal-experimental", # "hf-causal"
+        model_args=eval_request.get_model_args()+",trust_remote_code=True",
+        tasks=task_names[0:2],
         num_fewshot=num_fewshot,
         batch_size=batch_size,
         device=device,
-        no_cache=no_cache,
+        # no_cache=no_cache,
         limit=limit,
-        write_out=True,
-        output_base_path="logs"
+        write_out=False,
+        #output_base_path="logs"
     )
 
-    results["config"]["model_dtype"] = eval_request.precision
-    results["config"]["model_name"] = eval_request.model
-    results["config"]["model_sha"] = eval_request.revision
+    results_2 = evaluator.simple_evaluate(
+        model= 'huggingface', #"hf-causal-experimental", # "hf-causal"
+        model_args=eval_request.get_model_args()+",trust_remote_code=True",
+        tasks=task_names[2],
+        num_fewshot=5,
+        # batch_size=batch_size,
+        device=device,
+        # no_cache=no_cache,
+        limit=limit,
+        write_out=False,
+        #output_base_path="logs"
+    )
 
-    dumped = json.dumps(results, indent=2)
-    logger.info(dumped)
+    results_1["config"]["model_dtype"] = eval_request.precision
+    results_1["config"]["model_name"] = eval_request.model
+    results_1["config"]["model_sha"] = eval_request.revision
+
+    # Prepare the results in the desired JSON structure
+    formatted_results = {
+        "config": {
+            "model_dtype": eval_request.precision,
+            "model_name": eval_request.model,
+            "model_sha": eval_request.revision
+        },
+        "results": {
+            "mmlu_it": {
+                "acc": results_2['results'].get('m_mmlu_it', {}).get('acc,none')
+            },
+            "hellaswag_it": {
+                "acc_norm": results_1['results'].get('hellaswag_it', {}).get('acc_norm,none')
+            },
+            "arc_it": {
+                "acc_norm": results_1['results'].get('arc_it', {}).get('acc_norm,none')
+            }
+        },
+        "versions": None  # Assuming version detail is not provided
+    }
+    dump = json.dumps(formatted_results, indent=2)
+    logger.info(dump)
 
     output_path = os.path.join(local_dir, *eval_request.model.split("/"), f"results_{datetime.now()}.json")
     os.makedirs(os.path.dirname(output_path), exist_ok=True)
     with open(output_path, "w") as f:
-        f.write(dumped)
+        f.write(dump)
 
-    logger.info(evaluator.make_table(results))
+    # logger.info(evaluator.make_table(results))
 
     API.upload_file(
         path_or_fileobj=output_path,
-        path_in_repo=f"{eval_request.model}/results_{datetime.now()}.json",
+        path_in_repo=f"{eval_request.model}.json",
         repo_id=results_repo,
         repo_type="dataset",
     )
 
-    return results
+    return dump #results

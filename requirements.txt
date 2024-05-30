@@ -9,7 +9,6 @@ accelerate==0.24.1
 sentencepiece
 
 # Evaluation suites
-lighteval
 lm_eval
 
 # Log Visualizer

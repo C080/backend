@@ -6,13 +6,13 @@ from huggingface_hub import HfApi
 # ----------------------------------
 TOKEN = os.environ.get("HF_TOKEN") # A read/write token for your org
 
-OWNER = "demo-leaderboard-backend" # Change to your org - don't forget to create a results and request dataset
+OWNER = "FinancialSupport" # Change to your org - don't forget to create a results and request dataset
 
 # For harness evaluations
-DEVICE = "cpu" # "cuda:0" if you add compute, for harness evaluations
-LIMIT = 20 # !!!! For testing, should be None for actual evaluations!!!
+DEVICE = "cuda:0" # "cuda:0" if you add compute, for harness evaluations
+LIMIT = None #20 # !!!! For testing, should be None for actual evaluations!!!
 NUM_FEWSHOT = 0 # Change with your few shot for the Harness evaluations
-TASKS_HARNESS = ["anli_r1", "logiqa"]
+TASKS_HARNESS = ["hellaswag_it", "arc_it", "m_mmlu_it"]
 
 # For lighteval evaluations
 ACCELERATOR = "cpu"

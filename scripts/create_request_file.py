@@ -10,7 +10,7 @@ from huggingface_hub import HfApi, snapshot_download
 from src.envs import TOKEN, EVAL_REQUESTS_PATH, QUEUE_REPO
 
 precisions = ("float16", "bfloat16", "8bit (LLM.int8)", "4bit (QLoRA / FP4)", "GPTQ", "float32")
-model_types = ("pretrained", "fine-tuned", "RL-tuned", "instruction-tuned")
+model_types = ("pretrained", "fine-tuned", "RL-tuned", "merged")
 weight_types = ("Original", "Delta", "Adapter")
 
 
