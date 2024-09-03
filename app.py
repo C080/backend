@@ -1,3 +1,6 @@
+import sys
+sys.path.append('/home/ecuser/samu/lm-evaluation-harness')
+
 import logging
 from src.logging import configure_root_logger
 logging.getLogger("httpx").setLevel(logging.WARNING)

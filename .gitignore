@@ -13,3 +13,5 @@ eval-queue-bk/
 eval-results-bk/
 logs/
 output.log
+reuters/TRDataChallenge2023.txt
+reuters/requirements.txt
